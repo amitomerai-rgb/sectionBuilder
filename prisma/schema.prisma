@@ -1,6 +1,11 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+enum SectionStatus {
+  DRAFT
+  PUBLISHED
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -31,4 +36,21 @@ model Session {
   emailVerified Boolean?  @default(false)
   refreshToken        String?
   refreshTokenExpires DateTime?
+}
+
+model SectionProject {
+  id            String    @id @default(uuid())
+  shop          String
+  name          String
+  status        SectionStatus @default(DRAFT)
+
+  liquidCode    String?
+  schemaCode    String?
+  chatHistory   Json?
+
+  createdAt     DateTime  @default(now())  
+  updatedAt     DateTime  @updatedAt
+
+  @@index([shop])
+  @@index([shop, status])
 }
