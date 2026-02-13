@@ -1,7 +1,15 @@
+import { useAppBridge } from "@shopify/app-bridge-react";
 import SectionsGrid from "app/components/SectionsGrid/index";
-import { createDuplicateFromExistingSection, handleCardsViewLoader } from "app/serverActions";
+import { handlePublishedAction } from "app/serverActions/actions";
+import { handleCardsViewLoader } from "app/serverActions/loaders";
 import { authenticate } from "app/shopify.server";
-import { LoaderFunctionArgs, useLoaderData, ActionFunctionArgs } from "react-router";
+import { useEffect, useState } from "react";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  ActionFunctionArgs,
+  useRouteError,
+} from "react-router";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session } = await authenticate.admin(request);
@@ -17,20 +25,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await authenticate.admin(request);
   const formData = await request.formData();
 
-  const formId = String(formData.get("id"));
-  const intent = String(formData.get("intent"));
-
-  let res
-
-  if (intent === 'duplicate') {
-    res = await createDuplicateFromExistingSection(formId)
-  }
-
-  if (!res || res instanceof Error) {
-    return { ok: false, toast: { content: res?.message || "Unknown Error Or Action" } };
-  }
-  return { ok: true, action: intent, toast: { content: `Section ${res.name} Duplicated Successfully!` } };
+  const res = await handlePublishedAction(formData);
+  return res;
 };
+
+export function HydrateFallback() {
+  return <s-spinner size="large-100" />
+}
 
 export default function StudioPublished() {
   const { loadedSections } = useLoaderData<typeof loader>();
@@ -44,4 +45,26 @@ export default function StudioPublished() {
       </s-section>
     </s-page>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  const [mounted, setMounted] = useState(false);
+
+  const shopify = useAppBridge();
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (!(error instanceof Error)) return;
+
+    const msg = error.message;
+    if (!msg) return;
+
+    shopify.toast?.show(msg, { isError: true });
+  }, [error, mounted, shopify]);
+
+  return null;
 }

@@ -15,6 +15,8 @@ export const CardContainer = (props: HTMLAttributes<HTMLDivElement>) => (
         minHeight: "300px",
         minWidth: "300px",
         borderStyle: "solid",
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
         boxShadow: "-1px -1px 5px 1px grey",
         backgroundColor: "#f1f1f1",
         cursor: "pointer",

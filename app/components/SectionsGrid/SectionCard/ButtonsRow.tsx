@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import DeleteSectionModal from "../../DeleteSectionModal";
 
 const ButtonsRow = ({
@@ -13,6 +13,7 @@ const ButtonsRow = ({
   onDelete: () => void;
 }) => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const isDrafts = pathname.includes("/drafts");
 
@@ -28,7 +29,7 @@ const ButtonsRow = ({
           >
             DELETE
           </s-button>
-          <s-button>EDIT</s-button>
+          <s-button onClick={() => navigate(`/app/studio/editor?sectionId=${id}`)}>EDIT</s-button>
         </>
       )}
       <input type="hidden" name="intent" value="duplicate" />

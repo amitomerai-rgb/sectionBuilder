@@ -1,8 +1,8 @@
 import { CallbackEvent } from "@shopify/polaris-types";
 import { useState } from "react";
 import { useFetcher } from "react-router";
-import { ActionResult } from "app/serverActions";
 import { useToastFetcher } from "app/hooks/toast";
+import { ActionResult } from "app/serverActions/db";
 
 const NewSectionModal = () => {
   const [nameInput, setNameInput] = useState("");

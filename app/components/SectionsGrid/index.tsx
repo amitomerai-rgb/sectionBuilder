@@ -3,8 +3,8 @@ import SectionsGridButtons from "./SectionsGridButtons";
 import SectionCard from "./SectionCard";
 import { SectionsGridContainer } from "./styled";
 import { useFetcher } from "react-router";
-import { ActionResult } from "app/serverActions";
 import { useToastFetcher } from "app/hooks/toast";
+import { ActionResult } from "app/serverActions/db";
 
 const SectionsGrid = ({ sections }: { sections: SectionProject[] }) => {
   const actionFetcher = useFetcher<ActionResult>();

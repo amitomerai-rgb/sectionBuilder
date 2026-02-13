@@ -4,6 +4,7 @@ const StudioNavbar = () => {
   const { pathname } = useLocation();
 
   const isDrafts = pathname.includes("/drafts");
+    const isPublished = pathname.includes("/published");
 
   return (
     <s-stack direction="inline" gap="small">
@@ -31,7 +32,7 @@ const StudioNavbar = () => {
           padding="small-400"
           gap="small-400"
         >
-          <span style={{ ...(!isDrafts && { fontWeight: 'bold' }) }}>Published Sections</span>
+          <span style={{ ...(isPublished && { fontWeight: 'bold' }) }}>Published Sections</span>
           <s-icon type="check-circle" tone="success" />
         </s-stack>
       </s-link>

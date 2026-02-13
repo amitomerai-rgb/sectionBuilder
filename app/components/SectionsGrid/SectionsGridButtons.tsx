@@ -1,7 +1,7 @@
 import { useLoaderData, useLocation, useSearchParams } from "react-router";
 import NewSectionModal from "../NewSectionModal";
 import SectionsFilterAndSort from "./SectionsFilterAndSort";
-import { handleCardsViewLoader } from "app/serverActions";
+import { handleCardsViewLoader } from "app/serverActions/loaders";
 
 const SectionsGridButtons = () => {
   const { amountOfItems } = useLoaderData<typeof handleCardsViewLoader>();
